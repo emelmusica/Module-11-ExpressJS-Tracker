@@ -10,6 +10,9 @@ const app = express();
 // Define the port for the server to listen on
 const PORT = process.env.PORT || 3000;
 
+// Serve static files from the 'Develop/public' directory
+app.use(express.static(path.join(__dirname, 'Develop/public')));
+
 // Middleware
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
 app.use(express.json()); // Parse JSON data
@@ -18,7 +21,7 @@ app.use(express.json()); // Parse JSON data
 // Handle GET requests to '/api/notes'
 app.get('/api/notes', (req, res) => {
   // Read the contents of 'db.json' file and send the notes as a JSON response
-  fs.readFile(path.join(__dirname, 'db.json'), 'utf8', (err, data) => {
+  fs.readFile(path.join(__dirname, 'Develop/db/db.json'), 'utf8', (err, data) => {
     if (err) throw err;
     const notes = JSON.parse(data);
     res.json(notes);
@@ -36,7 +39,7 @@ app.post('/api/notes', (req, res) => {
   }
 
   // Read the contents of 'db.json' file
-  fs.readFile(path.join(__dirname, 'db.json'), 'utf8', (err, data) => {
+  fs.readFile(path.join(__dirname, 'Develop/db/db.json'), 'utf8', (err, data) => {
     if (err) throw err;
     const notes = JSON.parse(data);
     
@@ -51,7 +54,7 @@ app.post('/api/notes', (req, res) => {
     notes.push(newNote);
 
     // Write the updated notes array back to 'db.json' file
-    fs.writeFile(path.join(__dirname, 'db.json'), JSON.stringify(notes), (err) => {
+    fs.writeFile(path.join(__dirname, 'Develop/db/db.json'), JSON.stringify(notes), (err) => {
       if (err) throw err;
       res.json(newNote);
     });
